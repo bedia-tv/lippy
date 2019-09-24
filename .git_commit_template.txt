@@ -1,0 +1,12 @@
+##A 50 character summary of the commit - mention issues closed if applicable##
+Subject
+
+##A slightly longer summary of the commit##
+Summary
+
+##What did you do as part of your commit? (Focus on general details, not specific files)##
+List of Changes
+
+##Any further comments/notes?##
+Notes
+
