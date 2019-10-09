@@ -1,4 +1,4 @@
-##A 50 character summary of the commit - mention issues closed if applicable##
+##A 50 character summary of the commit - mention issues closed if applicable, in format (Closes #12)##
 Subject
 
 ##A slightly longer summary of the commit##
