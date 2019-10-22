@@ -44,7 +44,7 @@ with closing(VideoSequence(latest_file)) as frames:
             top, right, bottom, left = face_locations[0]
             faceFilename = faceFolderName+"/"+"frame{:04d}.jpg".format(idx)
             height = top-bottom
-            faceFrame = frame.crop((left,top,right,bottom-height*0.3))
+            faceFrame = frame.crop((left,top,right,bottom-  height*0.3))
             faceFrame.save(faceFilename)
 
 command = "ffmpeg -i "+latest_file+" -ab 160k -ac 2 -ar 44100 -vn "+folderNumber+"/audio.wav"
