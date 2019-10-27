@@ -1,0 +1,81 @@
+Obtaining file:///home/lewis/Documents/UniWork/LipNet
+Collecting Keras==2.0.2 (from lipnet==0.1.6)
+Collecting editdistance==0.3.1 (from lipnet==0.1.6)
+Collecting h5py==2.6.0 (from lipnet==0.1.6)
+Collecting matplotlib==2.0.0 (from lipnet==0.1.6)
+Collecting numpy==1.12.1 (from lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/a5/16/8a678404411842fe02d780b5f0a676ff4d79cd58f0f22acddab1b392e230/numpy-1.12.1.zip
+Collecting python-dateutil==2.6.0 (from lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/40/8b/275015d7a9ec293cf1bbf55433258fbc9d0711890a7f6dc538bac7b86bce/python_dateutil-2.6.0-py2.py3-none-any.whl
+Collecting scipy==0.19.0 (from lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/e5/93/9a8290e7eb5d4f7cb53b9a7ad7b92b9827ecceaddfd04c2a83f195d8767d/scipy-0.19.0.zip
+Collecting Pillow==4.1.0 (from lipnet==0.1.6)
+Collecting tensorflow==1.14 (from lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/f4/28/96efba1a516cdacc2e2d6d081f699c001d414cc8ca3250e6d59ae657eb2b/tensorflow-1.14.0-cp37-cp37m-manylinux1_x86_64.whl
+Collecting Theano==1.0.0 (from lipnet==0.1.6)
+Collecting nltk==3.2.2 (from lipnet==0.1.6)
+Collecting sk-video==1.1.10 (from lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/dd/3f/ce848b8b2062ad1ccf1449094a740c775f6c761339f411e44f1e090f23a7/sk_video-1.1.10-py2.py3-none-any.whl
+Collecting dlib==19.4.0 (from lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/1d/76/0f91fde37a83a40cf27e6cabd900b975c2667c522a07ae38e31cda2fa486/dlib-19.4.0.tar.gz
+Requirement already satisfied: pyyaml in /home/lewis/anaconda3/lib/python3.7/site-packages (from Keras==2.0.2->lipnet==0.1.6) (5.1.1)
+Requirement already satisfied: six in /home/lewis/anaconda3/lib/python3.7/site-packages (from Keras==2.0.2->lipnet==0.1.6) (1.12.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=1.5.6 in /home/lewis/anaconda3/lib/python3.7/site-packages (from matplotlib==2.0.0->lipnet==0.1.6) (2.4.0)
+Requirement already satisfied: pytz in /home/lewis/anaconda3/lib/python3.7/site-packages (from matplotlib==2.0.0->lipnet==0.1.6) (2019.1)
+Requirement already satisfied: cycler>=0.10 in /home/lewis/anaconda3/lib/python3.7/site-packages (from matplotlib==2.0.0->lipnet==0.1.6) (0.10.0)
+Requirement already satisfied: olefile in /home/lewis/anaconda3/lib/python3.7/site-packages (from Pillow==4.1.0->lipnet==0.1.6) (0.46)
+Collecting gast>=0.2.0 (from tensorflow==1.14->lipnet==0.1.6)
+Collecting tensorflow-estimator<1.15.0rc0,>=1.14.0rc0 (from tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/3c/d5/21860a5b11caf0678fbc8319341b0ae21a07156911132e0e71bffed0510d/tensorflow_estimator-1.14.0-py2.py3-none-any.whl
+Collecting grpcio>=1.8.6 (from tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/b9/ba/254011b066e6675411ba913dafd6e40ce8d3235bebf64fb226a7305f29ac/grpcio-1.24.3-cp37-cp37m-manylinux2010_x86_64.whl
+Collecting tensorboard<1.15.0,>=1.14.0 (from tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/91/2d/2ed263449a078cd9c8a9ba50ebd50123adf1f8cfbea1492f9084169b89d9/tensorboard-1.14.0-py3-none-any.whl
+Collecting astor>=0.6.0 (from tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/d1/4f/950dfae467b384fc96bc6469de25d832534f6b4441033c39f914efd13418/astor-0.8.0-py2.py3-none-any.whl
+Requirement already satisfied: wheel>=0.26 in /home/lewis/anaconda3/lib/python3.7/site-packages (from tensorflow==1.14->lipnet==0.1.6) (0.33.4)
+Collecting termcolor>=1.1.0 (from tensorflow==1.14->lipnet==0.1.6)
+Collecting keras-preprocessing>=1.0.5 (from tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/28/6a/8c1f62c37212d9fc441a7e26736df51ce6f0e38455816445471f10da4f0a/Keras_Preprocessing-1.1.0-py2.py3-none-any.whl
+Collecting absl-py>=0.7.0 (from tensorflow==1.14->lipnet==0.1.6)
+Collecting google-pasta>=0.1.6 (from tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/d0/33/376510eb8d6246f3c30545f416b2263eee461e40940c2a4413c711bdf62d/google_pasta-0.1.7-py3-none-any.whl
+Collecting protobuf>=3.6.1 (from tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/d7/34/02a2083afc14adff644a1e29783f276f12f1f914ca4cab157d73bb3d2fed/protobuf-3.10.0-cp37-cp37m-manylinux1_x86_64.whl
+Requirement already satisfied: wrapt>=1.11.1 in /home/lewis/anaconda3/lib/python3.7/site-packages (from tensorflow==1.14->lipnet==0.1.6) (1.11.2)
+Collecting keras-applications>=1.0.6 (from tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/71/e3/19762fdfc62877ae9102edf6342d71b28fbfd9dea3d2f96a882ce099b03f/Keras_Applications-1.0.8-py3-none-any.whl
+Requirement already satisfied: werkzeug>=0.11.15 in /home/lewis/anaconda3/lib/python3.7/site-packages (from tensorboard<1.15.0,>=1.14.0->tensorflow==1.14->lipnet==0.1.6) (0.15.4)
+Requirement already satisfied: setuptools>=41.0.0 in /home/lewis/anaconda3/lib/python3.7/site-packages (from tensorboard<1.15.0,>=1.14.0->tensorflow==1.14->lipnet==0.1.6) (41.0.1)
+Collecting markdown>=2.6.8 (from tensorboard<1.15.0,>=1.14.0->tensorflow==1.14->lipnet==0.1.6)
+  Using cached https://files.pythonhosted.org/packages/c0/4e/fd492e91abdc2d2fcb70ef453064d980688762079397f779758e055f6575/Markdown-3.1.1-py2.py3-none-any.whl
+Building wheels for collected packages: numpy, scipy, dlib
+  Building wheel for numpy (setup.py): started
+  Building wheel for numpy (setup.py): still running...
+  Building wheel for numpy (setup.py): finished with status 'error'
+  Running setup.py clean for numpy
+  Building wheel for scipy (setup.py): started
+  Building wheel for scipy (setup.py): finished with status 'error'
+  Running setup.py clean for scipy
+  Building wheel for dlib (setup.py): started
+  Building wheel for dlib (setup.py): finished with status 'error'
+  Running setup.py clean for dlib
+Failed to build numpy scipy dlib
+Installing collected packages: numpy, scipy, Theano, Keras, editdistance, h5py, python-dateutil, matplotlib, Pillow, gast, tensorflow-estimator, grpcio, absl-py, protobuf, markdown, tensorboard, astor, termcolor, keras-preprocessing, google-pasta, keras-applications, tensorflow, nltk, sk-video, dlib, lipnet
+  Found existing installation: numpy 1.16.4
+    Uninstalling numpy-1.16.4:
+      Successfully uninstalled numpy-1.16.4
+  Running setup.py install for numpy: started
+    Running setup.py install for numpy: still running...
+    Running setup.py install for numpy: finished with status 'error'
+  Rolling back uninstall of numpy
+  Moving to /home/lewis/anaconda3/bin/f2py
+   from /tmp/pip-uninstall-50d491au/f2py
+  Moving to /home/lewis/anaconda3/bin/f2py3
+   from /tmp/pip-uninstall-50d491au/f2py3
+  Moving to /home/lewis/anaconda3/bin/f2py3.7
+   from /tmp/pip-uninstall-50d491au/f2py3.7
+  Moving to /home/lewis/anaconda3/lib/python3.7/site-packages/numpy
+   from /home/lewis/anaconda3/lib/python3.7/site-packages/~umpy
+  Moving to /home/lewis/anaconda3/lib/python3.7/site-packages/numpy-1.16.4-py3.7.egg-info
+   from /home/lewis/anaconda3/lib/python3.7/site-packages/~umpy-1.16.4-py3.7.egg-info
