@@ -9,7 +9,7 @@
 
 ## Review
 
-All merge requests for documentation should be reviewed by two other people. One of those people should be familiar with the code applying to the documentation, to ensure that the  documentation is clear. The other person should be unfamiliar with the code if possible, to ensure that the documentation is clear to understand and doesn't include any ambiguous assumptions.
+(All merge requests for documentation should be reviewed by two other people. One of those people should be familiar with the code applying to the documentation, to ensure that the  documentation is clear. The other person should be unfamiliar with the code if possible, to ensure that the documentation is clear to understand and doesn't include any ambiguous assumptions.)
 
 ## Final checklist
 
