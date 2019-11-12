@@ -30,9 +30,12 @@ def train(run_name, start_epoch, stop_epoch, img_c, img_w, img_h, frames_n, abso
     curriculum = Curriculum(curriculum_rules)
     lip_gen = BasicGenerator(dataset_path=DATASET_DIR,
                                 minibatch_size=minibatch_size,
-                                img_c=img_c, img_w=img_w, img_h=img_h, frames_n=frames_n,
+                                img_c=img_c, img_w=img_w, img_h=img_h, frames_n=frames_n, vtype='face', face_predictor_path='common/predictors/shape_predictor_68_face_landmarks.dat',
                                 absolute_max_string_len=absolute_max_string_len,
                                 curriculum=curriculum, start_epoch=start_epoch).build()
+    print('-----')
+    print(lip_gen.default_validation_steps)
+    print('-----')
 
     lipnet = LipNet(img_c=img_c, img_w=img_w, img_h=img_h, frames_n=frames_n,
                             absolute_max_string_len=absolute_max_string_len, output_size=lip_gen.get_output_size())
@@ -70,5 +73,6 @@ def train(run_name, start_epoch, stop_epoch, img_c, img_w, img_h, frames_n, abso
                         pickle_safe=True)
 
 if __name__ == '__main__':
+    print(DATASET_DIR)
     run_name = datetime.datetime.now().strftime('%Y:%m:%d:%H:%M:%S')
     train(run_name, 0, 5000, 3, 100, 50, 75, 32, 50)

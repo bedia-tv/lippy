@@ -41,12 +41,13 @@ def find_files(directory, pattern):
                 yield filename
 
 for filepath in find_files(SOURCE_PATH, SOURCE_EXTS):
-    print "Processing: {}".format(filepath)
-    video = Video(vtype='face', face_predictor_path=FACE_PREDICTOR_PATH).from_video(filepath)
-
+    print("Processing: {}".format(filepath))
+    video = Video(vtype='face', face_predictor_path=FACE_PREDICTOR_PATH).from_large_video(filepath)
+    print("made video")
     filepath_wo_ext = os.path.splitext(filepath)[0]
     target_dir = os.path.join(TARGET_PATH, filepath_wo_ext)
     mkdir_p(target_dir)
+    print("Make directory " + target_dir)
 
     i = 0
     for frame in video.mouth:
