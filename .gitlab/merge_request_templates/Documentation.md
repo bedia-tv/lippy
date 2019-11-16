@@ -7,11 +7,13 @@
 
 <!-- Link related issues below. Insert the issue link or reference after the word "Closes" if merging this should automatically close it. -->
 
+<!--Remember to move the issue from 'Doing' to 'In Review' -->
 ## Review
 
 (All merge requests for documentation should be reviewed by two other people. One of those people should be familiar with the code applying to the documentation, to ensure that the  documentation is clear. The other person should be unfamiliar with the code if possible, to ensure that the documentation is clear to understand and doesn't include any ambiguous assumptions.)
 
 ## Final checklist
 
+- [] Move to 'In Review'
 - [] Expert reviewer
 - [] Novice reviewer

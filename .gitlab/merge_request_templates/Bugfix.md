@@ -1,10 +1,8 @@
-## Which bug did you fix?
+## Related issues
 
-<!-- Give a quick summary of the bug -->
+<!--Link issues which mention the bug you're fixing-->
 
-## Steps to reproduce
-
-<!-- What steps did you use to reproduce the bug? -->
+<!--Remember to move the issue from 'Doing' to 'In Review' -->
 
 ## What fix did you implement?
 
@@ -18,3 +16,8 @@
 ## Review
 
 (Bugfixes should be reviewed by one other person, preferably whoever reproduced the bug. In particular, watch out for other parts of the codebase that may be affected by the bug fix.)
+
+## Final Checklist
+- [] Move issues to 'In Review'
+- [] Reviewer
+
