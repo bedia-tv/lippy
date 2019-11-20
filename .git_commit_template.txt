@@ -1,12 +1,5 @@
-##A 50 character summary of the commit - mention issues closed if applicable, in format (Closes #12)##
-Subject
+## A 50 character summary of the commit - mention issues closed if applicable, in format (Closes #12) ##
 
-##A slightly longer summary of the commit##
-Summary
+## What did you do as part of your commit? (Focus on general details, not specific files) ##
 
-##What did you do as part of your commit? (Focus on general details, not specific files)##
-List of Changes
-
-##Any further comments/notes?##
-Notes
-
+## Any further comments/notes? ##
