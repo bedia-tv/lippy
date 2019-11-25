@@ -1,0 +1,22 @@
+before_script:
+    # This installs the required packages
+  - sudo apt-get update --quiet --yes
+  - cat packages.txt | xargs sudo apt-get install --quiet --yes
+  - pip3 install -r requirements.txt
+
+stages:
+  - Linting
+  - Test
+
+Linting:
+  stage: Linting
+  script:
+    - python3 -m pylint ./src/**/*.py || pylint-exit -cfail $?
+
+Test:
+  stage: Test
+  script:
+    # Add the src folder and all the folders under it to the PYTHONPATH environment variable
+  - export PYTHONPATH="./src:$(printf "%s:" ./src/*/)$PYTHONPATH"
+    # Command to run the tests
+  - python3 -m pytest --cov=src --cov-config=.coveragerc --cov-report=term-missing tests/
