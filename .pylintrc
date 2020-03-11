@@ -139,8 +139,6 @@ disable=print-statement,
         deprecated-sys-function,
         exception-escape,
         # CUSTOM
-        # Disable warning for unused wildcard imports
-        unused-wildcard-import,
         comprehension-escape
 
 # Enable the message, report, category or checker with the given id(s). You can

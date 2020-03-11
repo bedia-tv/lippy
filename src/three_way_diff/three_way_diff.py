@@ -1,35 +1,45 @@
-"""
+'''
 This module defines the functions to compute the three-way-diff between
 three objects of type str or List[str].
 The functions defined are:
 - three_way_diff_JSON
 - three_way_diff_HTML
-"""
+'''
 
-from json import dump, dumps
-from os import getcwd, path
-from typing import Any, Dict, List, Tuple, Union
-from json2html import *
+from json import dump
+from typing import Dict, List, Set, Tuple, Union
 from levenshtein import get_operations
 
 
-def _parse_operations(comparable: Union[str, List[str]],
-                      base: Union[str, List[str]],
+def _format_input(comparable: str, base: str) -> Tuple[List[str], List[str]]:
+    '''This function makes the given objects lowercase.'''
+    comparable_split = comparable.lower().split()
+    base_split = base.lower().split()
+
+    return comparable_split, base_split
+
+
+def _parse_operations(comparable: List[str], base: List[str],
                       operations_list: List[Tuple[str, int, int]]) \
-        -> Tuple[List[str], Dict[Any, Union[str, List[Union[str, int]]]]]:
-    """
+        -> Tuple[List[str], Dict[str, Union[str, List[str]]]]:
+    '''
     This functions parses the operations required to go from the comparable
     object to the base object. The returned dicitonary has the wrong part in
     the comparable object mapped to the part in the given base object as well
     as the times that it happens if bigger or equal to 2.
-    """
-    diff: Dict[str, Union[str, List[Union[str, int]]]] = {}
+    '''
+    diff: Dict[str, Union[str, List[str]]] = {}
+    # Using a dict to maintain order of insertion
     correct: Dict[str, bool] = {}
+    separator = ' '
+    operations_enumerated = list(enumerate(operations_list))
+    index_operation = 0
 
-    separator = ' ' if isinstance(base, list) else ''
-
-    for index_operation, (operation, index_comparable_start,
-                          index_base_start) in enumerate(operations_list):
+    while index_operation < len(operations_enumerated):
+        index_operation, (
+            operation,
+            index_comparable_start,
+            index_base_start) = operations_enumerated[index_operation]
         index_base_end = index_base_start
         index_comparable_end = index_comparable_start
         previous_index_base = index_base_start
@@ -72,7 +82,6 @@ def _parse_operations(comparable: Union[str, List[str]],
                         index_comparable_start:index_comparable_end + 1])
 
             value = separator.join(base[index_base_start:index_base_end + 1])
-
             current_value = diff.get(key)
 
             if current_value:
@@ -109,29 +118,28 @@ def _parse_operations(comparable: Union[str, List[str]],
 
 
 def _compute_accuracy(operations_list: List[Tuple[str, int, int]],
-                      base: Union[str, List[str]]) -> float:
-    """
+                      base: List[str]) -> float:
+    '''
     This function computes the accuracy of words given a list
     of operations to get from a string to the base string.
-    """
-    missed_indices: Dict[int, bool] = {}
+    '''
+    missed_indices: Set[int] = set()
 
     for operation, _index_comparable, index_base in operations_list:
         if operation != 'nothing' \
-                and not missed_indices.get(index_base, False):
-            missed_indices[index_base] = True
+                and index_base not in missed_indices:
+            missed_indices.add(index_base)
 
-    return round(1 - len(missed_indices.keys()) / len(base), 2)
+    return round(1 - len(missed_indices) / len(base), 2)
 
 
-def _find_element(list_values: List[str], value) -> int:
-    """
+def _find_element(list_values: List[str], value: str) -> int:
+    '''
     This function returns the index where the given value
     is within the list or -1.
-    """
+    '''
 
     for element_index, element in enumerate(list_values):
-
         if isinstance(element, list):
             if value in element:
                 return element_index
@@ -140,26 +148,28 @@ def _find_element(list_values: List[str], value) -> int:
     return -1
 
 
-def three_way_diff_compute(comparable1: Union[str, List[str]],
-                           comparable2: Union[str, List[str]],
-                           base: Union[str, List[str]])\
+def _three_way_diff_compute(comparable1: str,
+                            comparable2: str,
+                            base: str)\
     -> Dict[str,
             Union[Dict[str, Union[str, List[Union[str, int]]]],
                   Dict[str, float]]]:
-    """
+    '''
     This function creates a JSON object holding the results for
     the given comparable1 and comparable2 objects when compared with
     the base given object. The JSON object containing the results will
     have the differences between the strings and the accuracy of each string.
-    """
+    '''
+    comparable1_split, base_split = _format_input(comparable1, base)
+    comparable2_split, base_split = _format_input(comparable2, base)
 
-    operations_list_comparable1 = get_operations(comparable1, base)
+    operations_list_comparable1 = get_operations(comparable1_split, base_split)
     comparable1_correct, comparable1_diff = _parse_operations(
-        comparable1, base, operations_list_comparable1)
+        comparable1_split, base_split, operations_list_comparable1)
 
-    operations_list_comparable2 = get_operations(comparable2, base)
+    operations_list_comparable2 = get_operations(comparable2_split, base_split)
     comparable2_correct, comparable2_diff = _parse_operations(
-        comparable2, base, operations_list_comparable2)
+        comparable2_split, base_split, operations_list_comparable2)
 
     results: Dict[str,
                   Union[Dict[str, Union[str, List[Union[str, int]]]],
@@ -175,47 +185,24 @@ def three_way_diff_compute(comparable1: Union[str, List[str]],
                             'accuracy': {
                                 'comparable1': _compute_accuracy(
                                     operations_list_comparable1,
-                                    base),
+                                    base_split),
                                 'comparable2': _compute_accuracy(
                                     operations_list_comparable2,
-                                    base),
+                                    base_split),
                             }}
 
     return results
 
 
-def three_way_diff_JSON(comparable1: Union[str, List[str]],
-                        comparable2: Union[str, List[str]],
-                        base: Union[str, List[str]], file_object: str) -> str:
-    """
+def three_way_diff_JSON(comparable1: str,
+                        comparable2: str,
+                        base: str) -> None:
+    '''
     This function creates a JSON file comparing the given comparable1,
     comparable2 and base objects. The file is then saved in the
     location of the given file_object (_file_) in the returned path.
-    """
-    results_json = three_way_diff_compute(comparable1, comparable2, base)
-    root = path.join(getcwd(), path.dirname(file_object))
-    file_location = f'{root}/results.json'
+    '''
+    results_json = _three_way_diff_compute(comparable1, comparable2, base)
 
-    with open(file_location, 'w') as file:
-        dump(results_json, file)
-
-    return file_location
-
-
-def three_way_diff_HTML(comparable1: Union[str, List[str]],
-                        comparable2: Union[str, List[str]],
-                        base: Union[str, List[str]], file_object: str) -> str:
-    """
-    This function creates an HTML file comparing the given comparable1,
-    comparable2 and base objects. The file is then saved in the
-    location of the given file_object (_file_) in the returned path.
-    """
-    results_json = dumps(three_way_diff_compute(
-        comparable1, comparable2, base))
-    root = path.join(getcwd(), path.dirname(file_object))
-    file_location = f'{root}/results.html'
-
-    with open(file_location, 'w') as file:
-        file.write(json2html.convert(json=results_json))
-
-    return file_location
+    with open('results.json', 'w') as json_file:
+        dump(results_json, json_file)
