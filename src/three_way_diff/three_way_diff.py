@@ -1,9 +1,8 @@
 '''
 This module defines the functions to compute the three-way-diff between
-three objects of type str or List[str].
+three objects of type str.
 The functions defined are:
 - three_way_diff_JSON
-- three_way_diff_HTML
 '''
 
 from json import dump
@@ -24,9 +23,10 @@ def _parse_operations(comparable: List[str], base: List[str],
         -> Tuple[List[str], Dict[str, Union[str, List[str]]]]:
     '''
     This functions parses the operations required to go from the comparable
-    object to the base object. The returned dicitonary has the wrong part in
-    the comparable object mapped to the part in the given base object as well
-    as the times that it happens if bigger or equal to 2.
+    list of stirngs to the base list of strings. The returned dicitonary has
+    the wrong part in the comparable list of strings mapped to the part in the
+    given base list of strings as well as the times that it happens if bigger
+    or equal to 2.
     '''
     diff: Dict[str, Union[str, List[str]]] = {}
     # Using a dict to maintain order of insertion
@@ -155,10 +155,9 @@ def _three_way_diff_compute(comparable1: str,
             Union[Dict[str, Union[str, List[Union[str, int]]]],
                   Dict[str, float]]]:
     '''
-    This function creates a JSON object holding the results for
-    the given comparable1 and comparable2 objects when compared with
-    the base given object. The JSON object containing the results will
-    have the differences between the strings and the accuracy of each string.
+    This function creates a dictionary holding the results for
+    the given comparable1 and comparable2 strings when compared with
+    the base given string.
     '''
     comparable1_split, base_split = _format_input(comparable1, base)
     comparable2_split, base_split = _format_input(comparable2, base)
@@ -199,8 +198,7 @@ def three_way_diff_JSON(comparable1: str,
                         base: str) -> None:
     '''
     This function creates a JSON file comparing the given comparable1,
-    comparable2 and base objects. The file is then saved in the
-    location of the given file_object (_file_) in the returned path.
+    comparable2 and base string.
     '''
     results_json = _three_way_diff_compute(comparable1, comparable2, base)
 

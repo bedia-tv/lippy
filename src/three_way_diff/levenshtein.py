@@ -1,6 +1,6 @@
 '''
 This module defines the functions to compute the Levenshtein distance between
-two objects of type str or List[str].
+two objects of type List[str].
 The functions defined are:
 - get_operations
 - get_levenshtein_distance_matrix
@@ -14,7 +14,7 @@ def get_levenshtein_distance_matrix(comparable: List[str],
                                     base: List[str]) -> ndarray:
     '''
     This function creates the Levenhstein distance matrix for the given
-    comparable object and the given base object.
+    comparable list of strings and the given base list of strings.
     '''
     comparable_len = len(comparable)
     base_len = len(base)
@@ -45,8 +45,9 @@ def get_operations(comparable: List[str], base: List[str]) \
         -> List[Tuple[str, int, int]]:
     '''
     This function gets the required operations to get from the given
-    comparable string to the given base string. The operations are in format
-    (operation_type, index_comparable, index_base).
+    comparable list of strings to the given base list of strings.
+    The operations are in format (operation_type, index_comparable,
+    index_base).
     '''
     dist_matrix = get_levenshtein_distance_matrix(comparable, base)
     rows, cols = dist_matrix.shape
