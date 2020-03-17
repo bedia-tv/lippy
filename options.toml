@@ -1,0 +1,32 @@
+[general]
+usecudnn = false
+usecudnnbenchmark = false
+gpuid = 1
+pretrainedmodelpath = "trainedmodel.pt"
+padding = 11
+
+[input]
+numworkers = 0
+batchsize = 5
+shuffle = false
+
+[model]
+type = "LSTM"
+inputdim = 256
+hiddendim = 256
+numclasses = 500
+numlstms = 2
+
+[training]
+printfrequency = 5
+dataset = "./dataset"
+learningrate = 0.003
+momentum = 0.9
+weightdecay = 0.0001
+
+[validation]
+folder = "val"
+accuracyfilelocation = "accuracy.txt"
+
+[prediction]
+dataset = "./dataset-val"

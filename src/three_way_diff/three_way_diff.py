@@ -7,7 +7,7 @@ The functions defined are:
 
 from json import dump
 from typing import Dict, List, Set, Tuple, Union
-from levenshtein import get_operations
+from three_way_diff.levenshtein import get_operations
 
 
 def _format_input(comparable: str, base: str) -> Tuple[List[str], List[str]]:
