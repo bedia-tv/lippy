@@ -4,9 +4,9 @@ smaller videos of individual words.'''
 from enum import Enum
 from json import load
 from pathlib import Path
-from cv2 import COLOR_BGR2GRAY, cvtColor
 from moviepy.video.fx.all import crop
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from cv2 import COLOR_BGR2GRAY, cvtColor
 from dlib import get_frontal_face_detector
 
 
