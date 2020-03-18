@@ -1,4 +1,13 @@
-# Ignore all files without name
+# exclude everything
+audio/*
+jsons/*
+dataset/*
+transcripts/*
+predict/*
+
+src/downloaded.txt
+
+# Ignroe all files without name
 .*
 
 # Avoid ignoring the CI/CD config file
