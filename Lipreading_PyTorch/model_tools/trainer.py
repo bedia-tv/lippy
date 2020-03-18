@@ -3,7 +3,7 @@ from torch.optim import SGD
 from torch import save
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from data.lipreading_dataset import LipreadingDataset
+from Lipreading_PyTorch.data.lipreading_dataset import LipreadingDataset
 
 
 class Trainer():

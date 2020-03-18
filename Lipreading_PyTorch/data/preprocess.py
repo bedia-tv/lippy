@@ -4,8 +4,8 @@ from torch import FloatTensor
 from torchvision.transforms import (CenterCrop, Compose, Grayscale, Normalize,
                                     ToPILImage, ToTensor)
 from torchvision.transforms.functional import to_tensor
-from data.statefultransforms import (StatefulRandomCrop,
-                                     StatefulRandomHorizontalFlip)
+from Lipreading_PyTorch.data.statefultransforms import (StatefulRandomCrop,
+                                                        StatefulRandomHorizontalFlip)
 
 
 def load_video(filename):

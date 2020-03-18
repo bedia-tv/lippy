@@ -63,7 +63,7 @@ class Predictor():
             self.prediction_dataset_folder, 'files'))
         max_indices = self._get_max_indices(model)
         prediction_list = [index_to_word.get(max_indices[video_index].item(),
-                                             '<UNK>')
+                                             '<unk>')
                            for video_index in range(prediction_videos_num)]
         prediction = ' '.join(prediction_list)
 
