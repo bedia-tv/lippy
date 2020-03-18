@@ -139,7 +139,11 @@ disable=print-statement,
         deprecated-sys-function,
         exception-escape,
         # CUSTOM
-        comprehension-escape
+        # Disable warning for unused wildcard imports
+        unused-wildcard-import,
+        comprehension-escape,
+	  bad-continuation,
+        no-name-in-module
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

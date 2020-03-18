@@ -1,6 +1,6 @@
 variables:
   # Add the current folder, src folder and the Lipreading_Pytorch package to the PYTHONPATH env variable
-  PYTHONPATH: .:./Lipreading_PyTorch:./src
+        PYTHONPATH: .:./Lipreading_PyTorch:./src:$(printf "%s:" /src/*/)
 
 stages:
   - Build
@@ -18,10 +18,11 @@ Build:
 Linting:
   stage: Linting
   script:
-    - python3 -m pylint ./src || pylint-exit -cfail $?
+    - python3 -m pylint ./src/**/*.py || pylint-exit $?
 
 Test:
   stage: Test
   script:
     # Command to run the tests
-  - python3 -m pytest --cov=src tests/
+  - python3 -m pytest --cov=src --cov-config=.coveragerc --cov-report=term-missing tests/
+  
