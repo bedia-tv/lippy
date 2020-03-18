@@ -23,16 +23,17 @@ class NLLSequenceLoss(Module):
         return loss
 
 
-def get_folders_dic():
-    '''This function gets the name of the folders from the dataset folder
-    and creates a dictionary assigning the index of each folders to its
-    name.'''
-    dict_folder_index = {}
+def _validate(model_output, labels):
+    global MAXCOUNT
+    average_energies = t_sum(model_output.data, 1)
+    _maxvalues, maxindices = t_max(average_energies, 1)
+    count = 0
 
-    for index, value_folder in enumerate(list(walk('./dataset-val'))[0][1]):
-        dict_folder_index[index] = value_folder
+    for i in range(labels.squeeze(1).size(0)):
+        if maxindices[i] == labels.squeeze(1)[i]:
+            count += 1
 
-    return dict_folder_index
+    return count
 
 
 class LSTMBackend(Module):

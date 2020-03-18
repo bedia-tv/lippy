@@ -1,7 +1,7 @@
 from os import listdir
 from torch import LongTensor
 from torch.utils.data import Dataset
-from data.preprocess import bbc, load_video
+from Lipreading_PyTorch.data.preprocess import bbc, load_video
 
 
 def build_file_list(directory, type_set):

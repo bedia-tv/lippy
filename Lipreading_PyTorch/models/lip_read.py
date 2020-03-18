@@ -1,9 +1,9 @@
 from re import search
 from torch.nn import Module
-from models.conv_backend import ConvBackend
-from models.conv_frontend import ConvFrontend
-from models.LSTMBackend import LSTMBackend
-from models.ResNetBBC import ResNetBBC
+from Lipreading_PyTorch.models.conv_backend import ConvBackend
+from Lipreading_PyTorch.models.conv_frontend import ConvFrontend
+from Lipreading_PyTorch.models.LSTMBackend import LSTMBackend
+from Lipreading_PyTorch.models.ResNetBBC import ResNetBBC
 
 
 class LipRead(Module):

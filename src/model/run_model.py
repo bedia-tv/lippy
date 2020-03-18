@@ -12,7 +12,7 @@ from torch.backends import cudnn
 from Lipreading_PyTorch.model_tools.trainer import Trainer
 from Lipreading_PyTorch.model_tools.validator import Validator
 from Lipreading_PyTorch.models.lip_read import LipRead
-from model.model_tools.predictor import Predictor
+from src.model.model_tools.predictor import Predictor
 
 
 def run_model(train, validate, predict, loadpretrainedmodel, epochs):
