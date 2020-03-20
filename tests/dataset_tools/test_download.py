@@ -1,6 +1,6 @@
 from unittest import TestCase
 from os import path, remove
-from src.build_dataset.download import (
+from src.dataset_tools.download import (
     extract_transcript,
     save_transcript,
     get_transcript,
@@ -139,8 +139,8 @@ class DownloadTest(TestCase):
     def setUpClass(cls):
         cls.URL = 'foo'
 
-    @patch('src.build_dataset.download.get_options')
-    @patch('src.build_dataset.download.handle_subtitles')
+    @patch('src.dataset_tools.download.get_options')
+    @patch('src.dataset_tools.download.handle_subtitles')
     def test_raise_exception_on_subs_download(
         self, mock_handle_subtitles, mock_get_options
     ):
@@ -156,8 +156,8 @@ class DownloadTest(TestCase):
         self.assertTrue(
             'Error downloading subtitles' in str(context.exception))
 
-    @patch('src.build_dataset.download.get_options')
-    @patch('src.build_dataset.download.handle_subtitles')
+    @patch('src.dataset_tools.download.get_options')
+    @patch('src.dataset_tools.download.handle_subtitles')
     def test_raise_exception_on_audio_download(
         self, mock_handle_subtitles, mock_get_options
     ):
@@ -172,8 +172,8 @@ class DownloadTest(TestCase):
 
         self.assertTrue('Error downloading audio' in str(context.exception))
 
-    @patch('src.build_dataset.download.get_options')
-    @patch('src.build_dataset.download.handle_subtitles')
+    @patch('src.dataset_tools.download.get_options')
+    @patch('src.dataset_tools.download.handle_subtitles')
     def test_raise_exception_on_video_download(
         self, mock_handle_subtitles, mock_get_options
     ):

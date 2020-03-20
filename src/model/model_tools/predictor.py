@@ -51,8 +51,10 @@ class Predictor():
         return max_indices
 
     def predict(self, model):
-        ''''This function predicts the words said in the videos
-        that are in the prediction folder.'''
+        '''
+        This function predicts the words said in the videos
+        that are in the prediction folder.
+        '''
         print('Predicting...')
 
         dataset_folders = Predictor._get_files_from_folder(
@@ -61,6 +63,9 @@ class Predictor():
 
         prediction_videos_num = len(Predictor._get_files_from_folder(
             self.prediction_dataset_folder, 'files'))
+        if prediction_videos_num == 0:
+            return ''
+
         max_indices = self._get_max_indices(model)
         prediction_list = [index_to_word.get(max_indices[video_index].item(),
                                              '<unk>')

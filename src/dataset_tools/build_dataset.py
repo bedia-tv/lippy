@@ -2,9 +2,9 @@
 in the dataset building pipeline.'''
 
 from os import mkdir, path, remove
-from src.build_dataset.download import download
-from src.build_dataset.get_align import get_align
-from src.build_dataset.video_crop import OutputType, crop_video
+from src.dataset_tools.download import download
+from src.dataset_tools.get_align import get_align
+from src.dataset_tools.video_crop import OutputType, crop_video
 
 
 def get_playlist_videos(playlist_path: str) -> list:

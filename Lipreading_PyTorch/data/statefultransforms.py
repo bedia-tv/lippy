@@ -23,7 +23,8 @@ class StatefulRandomCrop():
 
     @staticmethod
     def get_params(insize, outsize):
-        '''Get parameters for ``crop`` for a random crop.
+        '''
+        Get parameters for ``crop`` for a random crop.
         Args:
             insize (PIL Image): Image to be cropped.
             outsize (tuple): Expected output size of the crop.

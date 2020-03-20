@@ -16,10 +16,12 @@ class LipRead(Module):
         self.type = options['model']['type']
 
         def weights_init(m):
-            '''Function to initialize the weights and biases of each
+            '''
+            Function to initialize the weights and biases of each
             module. Matches the classname with a regular expression to
             determine the type of the module, then initializes the weights
-            for it.'''
+            for it.
+            '''
             classname = m.__class__.__name__
 
             if search('Conv[123]d', classname):

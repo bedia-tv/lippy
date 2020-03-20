@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 from os import path, remove
-from src.build_dataset.build_dataset import (
+from src.dataset_tools.build_dataset import (
     setup_dirs,
     clear_dirs,
     get_processed_videos,
@@ -9,8 +9,8 @@ from src.build_dataset.build_dataset import (
     build,
     add_to_dataset,
 )
-from src.build_dataset.download import download
-from src.build_dataset.get_align import get_align
+from src.dataset_tools.download import download
+from src.dataset_tools.get_align import get_align
 from io import StringIO
 from textwrap import dedent
 
@@ -22,8 +22,8 @@ class AddToDatasetTests(TestCase):
         cls.VIDEOID = 'foo'
         cls.VALIDATE = False
 
-    @patch('src.build_dataset.build_dataset.download')
-    @patch('src.build_dataset.build_dataset.get_align')
+    @patch('src.dataset_tools.build_dataset.download')
+    @patch('src.dataset_tools.build_dataset.get_align')
     def test_download_error_stops_align(self, mock_align, mock_download, mock_open):
         mock_download.side_effect = Exception()
         mock_align.return_value = None
@@ -31,9 +31,9 @@ class AddToDatasetTests(TestCase):
         add_to_dataset(self.VIDEOID, self.VALIDATE)
         self.assertEqual(mock_align.call_count, 0)
 
-    @patch('src.build_dataset.build_dataset.download')
-    @patch('src.build_dataset.build_dataset.get_align')
-    @patch('src.build_dataset.build_dataset.crop_video')
+    @patch('src.dataset_tools.build_dataset.download')
+    @patch('src.dataset_tools.build_dataset.get_align')
+    @patch('src.dataset_tools.build_dataset.crop_video')
     def test_download_error_stops_crop(
         self, mock_crop, mock_align, mock_download, mock_open
     ):
@@ -44,9 +44,9 @@ class AddToDatasetTests(TestCase):
         add_to_dataset(self.VIDEOID, self.VALIDATE)
         self.assertEqual(mock_crop.call_count, 0)
 
-    @patch('src.build_dataset.build_dataset.download')
-    @patch('src.build_dataset.build_dataset.get_align')
-    @patch('src.build_dataset.build_dataset.crop_video')
+    @patch('src.dataset_tools.build_dataset.download')
+    @patch('src.dataset_tools.build_dataset.get_align')
+    @patch('src.dataset_tools.build_dataset.crop_video')
     def test_align_error_stops_crop(
         self, mock_crop, mock_align, mock_download, mock_open
     ):
@@ -197,9 +197,9 @@ class BuildTests(TestCase):
     def setUpClass(cls):
         cls.PLAYLIST_FILE = 'playlist.txt'
 
-    @patch('src.build_dataset.build_dataset.get_playlist_videos')
-    @patch('src.build_dataset.build_dataset.get_processed_videos')
-    @patch('src.build_dataset.build_dataset.add_to_dataset')
+    @patch('src.dataset_tools.build_dataset.get_playlist_videos')
+    @patch('src.dataset_tools.build_dataset.get_processed_videos')
+    @patch('src.dataset_tools.build_dataset.add_to_dataset')
     def test_processed_videos_are_not_reprocessed(
         self, mock_add_to_dataset, mock_processed_videos, mock_playlist_videos
     ):
@@ -210,9 +210,9 @@ class BuildTests(TestCase):
         build(self.PLAYLIST_FILE)
         self.assertEqual(mock_add_to_dataset.call_count, 0)
 
-    @patch('src.build_dataset.build_dataset.get_playlist_videos')
-    @patch('src.build_dataset.build_dataset.get_processed_videos')
-    @patch('src.build_dataset.build_dataset.add_to_dataset')
+    @patch('src.dataset_tools.build_dataset.get_playlist_videos')
+    @patch('src.dataset_tools.build_dataset.get_processed_videos')
+    @patch('src.dataset_tools.build_dataset.add_to_dataset')
     def test_new_videos_are_processed(
         self, mock_add_to_dataset, mock_processed_videos, mock_playlist_videos
     ):

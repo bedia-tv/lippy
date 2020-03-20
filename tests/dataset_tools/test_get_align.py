@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch, mock_open, Mock
-from src.build_dataset.get_align import set_file_locations, gentle_align_get, get_align
+from src.dataset_tools.get_align import set_file_locations, gentle_align_get, get_align
 from os import path, remove
 from textwrap import dedent
-import json
+from json import loads
 
 
 class SetFileLocationsTests(unittest.TestCase):
@@ -36,7 +36,7 @@ class SetFileLocationsTests(unittest.TestCase):
 
 
 class GentleAlignGetTests(unittest.TestCase):
-    @patch('src.build_dataset.get_align.post')
+    @patch('src.dataset_tools.get_align.post')
     def test_gentle_response_is_json(self, mock_post):
         mock_post.return_value = dedent(
             '''
@@ -47,10 +47,10 @@ class GentleAlignGetTests(unittest.TestCase):
         ).strip()
         expected_json = gentle_align_get(None, None)
         # throws exception if invalid JSON
-        json_object = json.loads(expected_json)
+        json_object = loads(expected_json)
 
-    @patch('src.build_dataset.get_align.post')
-    @patch('src.build_dataset.get_align.set_file_locations')
+    @patch('src.dataset_tools.get_align.post')
+    @patch('src.dataset_tools.get_align.set_file_locations')
     def test_connection_refused_returns_none(self, mock_set_file, mock_post):
         mock_set_file.return_value = {'params': 'foo', 'files': 'bar'}
         mock_post.side_effect = ConnectionRefusedError()
@@ -72,8 +72,8 @@ class GetAlignTests(unittest.TestCase):
         # del align file
         remove(f'jsons/{cls.AUDIO_RAW_NAME}.json')
 
-    @patch('src.build_dataset.get_align.set_file_locations')
-    @patch('src.build_dataset.get_align.gentle_align_get')
+    @patch('src.dataset_tools.get_align.set_file_locations')
+    @patch('src.dataset_tools.get_align.gentle_align_get')
     def test_align_in_correct_location(
         self, mock_gentle_align_get, mock_set_file_locations
     ):

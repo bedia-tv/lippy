@@ -9,7 +9,8 @@ from Lipreading_PyTorch.data.statefultransforms import (StatefulRandomCrop,
 
 
 def load_video(filename):
-    '''Loads the specified video using ffmpeg.
+    '''
+    Loads the specified video using ffmpeg.
 
     Args:
         filename (str): The path to the file to load.
@@ -17,14 +18,16 @@ def load_video(filename):
 
     Returns:
         List[FloatTensor]: the frames of the video as a list of 3D tensors
-            (channels, width, height)'''
+            (channels, width, height)
+    '''
     vid = get_reader(filename, 'ffmpeg')
 
     return [to_tensor(image) for image in vid]
 
 
 def bbc(vidframes, augmentation, padding, filename):
-    '''Preprocesses the specified list of frames by center cropping.
+    '''
+    Preprocesses the specified list of frames by center cropping.
     This will only work correctly on videos that are already centered on the
     mouth region, such as LRITW.
 
@@ -34,7 +37,8 @@ def bbc(vidframes, augmentation, padding, filename):
 
     Returns:
         FloatTensor: The video as a temporal volume, represented as a 5D tensor
-            (batch, channel, time, width, height)'''
+            (batch, channel, time, width, height)
+    '''
     temporal_volume = FloatTensor(1, padding, 112, 112)
     croptransform = CenterCrop((112, 112))
 
