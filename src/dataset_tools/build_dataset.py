@@ -2,6 +2,8 @@
 in the dataset building pipeline.'''
 
 from os import mkdir, path, remove
+from typing import Tuple
+from toml import loads
 from src.dataset_tools.download import download
 from src.dataset_tools.get_align import get_align
 from src.dataset_tools.video_crop import OutputType, crop_video
@@ -52,7 +54,8 @@ def clear_dirs(video_id: str):
             remove(file)
 
 
-def add_to_dataset(video: str, output_type: OutputType):
+def add_to_dataset(video: str, output_type: OutputType,
+                   save_loc: Tuple[str]) -> None:
     '''Given a Youtube video URL, adds it to the dataset.'''
     # Make sure this variable exist even if the video isn't downloaded
     videoid = '<DEFAULT>'
@@ -69,7 +72,7 @@ def add_to_dataset(video: str, output_type: OutputType):
 
         # STEP 3: Cropper
         print('Cropping video...')
-        crop_video(videoid, output_type)
+        crop_video(videoid, output_type, save_loc)
     except Exception as _excepted:  # pylint: disable=broad-except
         print('Unable to crop video')
     finally:
@@ -89,6 +92,30 @@ def setup_dirs():
             mkdir(directory)
 
 
+def get_save_folder_structure(output_type: OutputType) -> Tuple[str]:
+    '''Gets the correct folder structure to save the downloaded videos.'''
+    with open('options.toml', 'r') as options_file:
+        options = loads(options_file.read())
+
+    if output_type == OutputType.TRAIN:
+        save_loc = (options['training']['dataset'], 'train')
+    elif output_type == OutputType.VAL:
+        if options['validation']['folder'] == 'train':
+            raise ValueError('''You have specified to add something to \
+                the validation part of the dataset but in the \
+                options you have set the training dataset to be the \
+                same as the validation dataset. Change the \
+                `['validation']['folder']` option to be something else \
+                than "train".''')
+        else:
+            save_loc = (options['training']['dataset'],
+                        options['validation']['folder'])
+    else:
+        save_loc = (options['prediction']['dataset'], None)
+
+    return save_loc
+
+
 def build(playlist: str, output_type: OutputType = OutputType.TRAIN) -> None:
     '''Take in a playlist and a list of already downloaded videos, and
     add each video to the dataset that hasn't been added already.'''
@@ -98,11 +125,12 @@ def build(playlist: str, output_type: OutputType = OutputType.TRAIN) -> None:
     download_file = 'src/downloaded.txt'
     downloaded_videos = get_processed_videos(download_file)
     playlist_videos = get_playlist_videos(playlist)
+    save_loc = get_save_folder_structure(output_type)
 
     for video in playlist_videos:
         if video.rstrip('\n') not in downloaded_videos:
             print(video)
-            add_to_dataset(video, output_type)
+            add_to_dataset(video, output_type, save_loc)
             downloaded_videos.add(video.rstrip('\n'))
         else:
             print(video.rstrip('\n') + ' has already been downloaded')

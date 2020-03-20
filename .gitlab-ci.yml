@@ -14,7 +14,7 @@ Build:
 Linting:
   stage: Linting
   script:
-    - python3 -m pylint ./src || pylint-exit -cfail $?
+    - python3 -m pylint ./src || pylint-exit -cfail -efail $?
 
 Test:
   stage: Test

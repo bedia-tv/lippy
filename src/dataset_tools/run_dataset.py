@@ -3,12 +3,10 @@ This module handles the arguments from the interface to
 call the appropriate functions in producing a dataset.
 '''
 from os.path import isfile
-
-from src.dataset_tools.build_dataset import build
+from src.dataset_tools.build_dataset import build, get_save_folder_structure
 from src.dataset_tools.download import download
 from src.dataset_tools.get_align import get_align
-from src.dataset_tools.video_crop import crop_video
-from src.dataset_tools.video_crop import OutputType
+from src.dataset_tools.video_crop import OutputType, crop_video
 
 
 def run_dataset(function, output_type, playlist_file, url,
@@ -40,7 +38,9 @@ def run_dataset(function, output_type, playlist_file, url,
 
         If function is 'crop', returns None.
     '''
+
     if function == 'build':
+        # handle build
         if output_type is None:
             raise ValueError('An output type must be defined.')
         else:
@@ -48,32 +48,39 @@ def run_dataset(function, output_type, playlist_file, url,
 
         if playlist_file is None:
             raise ValueError('A playlist file must be specified.')
+
         if not isfile(playlist_file):
             raise ValueError(f'{playlist_file} is not a valid playlist file.')
 
         build(playlist_file, output)
-
         return None
 
-    elif function == 'download':
+    if function == 'download':
+        # handle download
         if url is None:
             raise ValueError('A url must be specified.')
+
         return download(url)
 
-    elif function == 'align':
+    if function == 'align':
+        # handle align
         if audio_file is None:
             raise ValueError('An audio file must be specified.')
+
         if not isfile(audio_file):
             raise ValueError(f'{audio_file} is not a valid audio file.')
+
         if transcript_file is None:
             raise ValueError('A transcript file must be specified.')
+
         if not isfile(transcript_file):
             raise ValueError(
                 f'{transcript_file} is not a valid transcript file.')
 
         return get_align(audio_file, transcript_file)
 
-    elif function == 'crop':
+    if function == 'crop':
+        # handle crop
         if output_type is None:
             raise ValueError('An output type must be defined.')
         else:
@@ -81,4 +88,8 @@ def run_dataset(function, output_type, playlist_file, url,
 
         if videoid is None:
             raise ValueError('A video id must be specified.')
-        return crop_video(videoid, output_type)
+
+        save_loc = get_save_folder_structure(output)
+        crop_video(videoid, output_type, save_loc)
+
+        return None
