@@ -3,13 +3,15 @@ This module defines functions to handle arguments from the
 command line and use them as parameters for the corresponding
 function.
 The functions defined are:
- - dataset
- - model
- - interface
- -_run_parser
+ - _dataset
+ - _model
+ - _interface
+ - _run_parser
 '''
 from argparse import ArgumentParser
+from os import path
 from sys import argv
+from toml import loads
 from src.model.run_model import run_model
 from src.three_way_diff.three_way_diff import three_way_diff_JSON
 from src.dataset_tools.run_dataset import run_dataset
@@ -49,8 +51,8 @@ def _model(train, validate, predict, loadpretrainedmodel,
             speech_to_text_string = 'all change hope to friends'
             # Creation of the JSON file results.json comparing
             # the changes between the strings
-            three_way_diff_JSON(prediction_string, base_string,
-                                speech_to_text_string)
+            three_way_diff_JSON(prediction_string, speech_to_text_string,
+                                base_string)
             print(prediction_string)
 
 

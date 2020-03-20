@@ -4,6 +4,7 @@ smaller videos of individual words.'''
 from enum import Enum
 from json import load
 from pathlib import Path
+from typing import Tuple
 from cv2 import COLOR_BGR2GRAY, cvtColor
 from moviepy.video.fx.all import crop
 from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -35,7 +36,7 @@ def apply_padding(start, end, pad, duration):
 
 
 def crop_word(found_word: str, start: float, end: float,
-              videoid: str, output_type: OutputType):
+              videoid: str, save_loc: Tuple[str]):
     # pylint: disable=too-many-arguments, too-many-locals
     '''crops a video into a small segment, including padding, face detection
     and face bounding.'''
@@ -69,7 +70,8 @@ def crop_word(found_word: str, start: float, end: float,
         )
 
         filename = f'{videoid}_{start:.2f}'
-        save_to_file(final_word, found_word, filename, output_type)
+        save_to_file(final_word, found_word, filename,
+                     save_loc)
 
     elif len(start_faces) == 0 or len(end_faces) == 0:
         print('No faces found in either the start or end frame.')
@@ -91,33 +93,23 @@ def get_face_bounds(start_face, end_face):
 
 
 def save_to_file(final_word, found_word: str,
-                 filename: str, output_type: OutputType):
+                 filename: str,
+                 save_loc: Tuple[str]) -> None:
     '''Saves the final cropped word to the correct location based on
     the desired output type (train/val/predict)'''
-    if output_type is OutputType.TRAIN:
-        word_output_path = Path(f'dataset/{found_word}')
-        word_output_path.mkdir(exist_ok=True)
 
-        word_output = Path(f'dataset/{found_word}/train/')
-        word_output.mkdir(exist_ok=True)
+    folder_output_path = Path(save_loc[0])
+    folder_output_path.mkdir(exist_ok=True)
 
-        word_val = Path(f'dataset/{found_word}/val/')
-        word_val.mkdir(exist_ok=True)
-    elif output_type is OutputType.VAL:
-        word_output_path = Path(f'dataset/{found_word}')
-        word_output_path.mkdir(exist_ok=True)
+    if save_loc[1] is not None:
+        word_path = Path(f'{save_loc[0]}/{found_word}')
+        word_path.mkdir(exist_ok=True)
 
-        word_train = Path(f'dataset/{found_word}/train/')
-        word_train.mkdir(exist_ok=True)
-
-        word_output = Path(f'dataset/{found_word}/val/')
-        word_output.mkdir(exist_ok=True)
-    else:
-        word_output = Path('predict/')
-        word_output.mkdir(exist_ok=True)
+        folder_output_path = Path(f'{save_loc[0]}/{found_word}/{save_loc[1]}')
+        folder_output_path.mkdir(exist_ok=True)
 
     final_word.write_videofile(
-        filename=f'{str(word_output)}/{filename}.mp4', audio_codec='aac'
+        filename=f'{str(folder_output_path)}/{filename}.mp4', audio_codec='aac'
     )
 
 
@@ -129,13 +121,15 @@ def get_faces(frame):
     return detector(gray, 1)
 
 
-def crop_video(videoid: str, output_type: OutputType):
+def crop_video(videoid: str, output_type: OutputType,
+               save_loc: Tuple[str]) -> None:
     '''Load an alignment and crop a video using that alignment.'''
     align = load_align(videoid)
-    crop_words(align, videoid, output_type)
+    crop_words(align, videoid, save_loc)
 
 
-def crop_words(align: dict, videoid: str, output_type: OutputType):
+def crop_words(align: dict, videoid: str,
+               save_loc: Tuple[str]) -> None:
     '''Crop an entire video, filtering out failed alignments and OOV terms.'''
     for word in align['words']:
         if word['case'] == 'success':
@@ -144,5 +138,5 @@ def crop_words(align: dict, videoid: str, output_type: OutputType):
             if found_word != '<unk>':
                 crop_word(
                     found_word, word['start'], word['end'],
-                    videoid, output_type
+                    videoid, save_loc
                 )

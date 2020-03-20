@@ -21,6 +21,9 @@ class AddToDatasetTests(TestCase):
     def setUpClass(cls):
         cls.VIDEOID = 'foo'
         cls.VALIDATE = False
+        cls.TRAIN_LOC = ('testingTrain', 'testingVal')
+        cls.VAL_LOC = ('testingTrain', 'testingVal')
+        cls.PREDICT_LOC = ('testingPredict', None)
 
     @patch('src.dataset_tools.build_dataset.download')
     @patch('src.dataset_tools.build_dataset.get_align')
@@ -28,7 +31,7 @@ class AddToDatasetTests(TestCase):
         mock_download.side_effect = Exception()
         mock_align.return_value = None
 
-        add_to_dataset(self.VIDEOID, self.VALIDATE)
+        add_to_dataset(self.VIDEOID, self.VALIDATE, self.TRAIN_LOC)
         self.assertEqual(mock_align.call_count, 0)
 
     @patch('src.dataset_tools.build_dataset.download')
@@ -41,7 +44,7 @@ class AddToDatasetTests(TestCase):
         mock_align.return_value = None
         mock_crop.return_value = None
 
-        add_to_dataset(self.VIDEOID, self.VALIDATE)
+        add_to_dataset(self.VIDEOID, self.VALIDATE, self.TRAIN_LOC)
         self.assertEqual(mock_crop.call_count, 0)
 
     @patch('src.dataset_tools.build_dataset.download')
@@ -59,7 +62,7 @@ class AddToDatasetTests(TestCase):
         mock_align.side_effect = Exception()
         mock_crop.return_value = None
 
-        add_to_dataset(self.VIDEOID, self.VALIDATE)
+        add_to_dataset(self.VIDEOID, self.VALIDATE, self.TRAIN_LOC)
         self.assertEqual(mock_crop.call_count, 0)
 
 

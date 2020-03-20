@@ -25,7 +25,7 @@ momentum = 0.9
 weightdecay = 0.0001
 
 [validation]
-folder = "train"
+folder = "val"
 accuracyfilelocation = "accuracy.txt"
 
 [prediction]

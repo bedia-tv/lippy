@@ -1,6 +1,6 @@
 from unittest import TestCase
 from unittest.mock import patch
-from os import path, remove
+from os import path, remove, walk
 from src.dataset_tools.video_crop import (
     load_align,
     crop_words,
@@ -56,12 +56,12 @@ class CropWordsTest(TestCase):
             cls.TEST_ALIGN_WITH_UNK = {'words': TEST_ALIGN_WITH_UNK_LIST}
 
     def test_ignore_invalid_words(self, mock_crop_word):
-        crop_words(self.TEST_ALIGN_WITH_FAIL, self.TEST_VIDEOID, False)
+        crop_words(self.TEST_ALIGN_WITH_FAIL, self.TEST_VIDEOID, None)
 
         self.assertEqual(mock_crop_word.call_count, 10)
 
     def test_ignore_unk_words(self, mock_crop_word):
-        crop_words(self.TEST_ALIGN_WITH_UNK, self.TEST_VIDEOID, False)
+        crop_words(self.TEST_ALIGN_WITH_UNK, self.TEST_VIDEOID, None)
 
         self.assertEqual(mock_crop_word.call_count, 10)
 
@@ -72,7 +72,6 @@ class SaveToFileTest(TestCase):
     def setUpClass(cls):
         class MockVideoFileClip(object):
             def write_videofile(self, filename, audio_codec):
-
                 open(filename, 'a').close()
 
         cls.VIDEOID = 'foobar'
@@ -81,38 +80,44 @@ class SaveToFileTest(TestCase):
         cls.FILENAME_PREDICT = 'predictFile'
         cls.FILENAME_TRAIN = 'trainFile'
         cls.FILENAME_VAL = 'validateFile'
+        cls.TRAIN_LOC = ('testingTrain', 'testingVal')
+        cls.VAL_LOC = ('testingTrain', 'testingVal')
+        cls.PREDICT_LOC = ('testingPredict', None)
 
         save_to_file(
             cls.FINALWORD,
             cls.FOUNDWORD,
             cls.FILENAME_PREDICT,
-            OutputType.PREDICT,
+            cls.PREDICT_LOC,
         )
-        save_to_file(
+        cls.TEST_TRAIN = save_to_file(
             cls.FINALWORD,
             cls.FOUNDWORD,
             cls.FILENAME_TRAIN,
-            OutputType.TRAIN,
+            cls.TRAIN_LOC
         )
-        save_to_file(
-            cls.FINALWORD, cls.FOUNDWORD, cls.FILENAME_VAL, OutputType.VAL
+        cls.TEST_VAL = save_to_file(
+            cls.FINALWORD,
+            cls.FOUNDWORD,
+            cls.FILENAME_VAL,
+            cls.VAL_LOC
         )
 
     @classmethod
     def tearDownClass(cls):
-        rmtree(f'dataset/{cls.FOUNDWORD}')
-        remove(f'predict/{cls.FILENAME_PREDICT}.mp4')
+        rmtree(cls.TRAIN_LOC[0])
+        rmtree(cls.PREDICT_LOC[0])
 
     def test_predict_saves_in_correct_location(self, mock_video_file_clip):
-        expect_file_name = f'predict/{self.FILENAME_PREDICT}.mp4'
+        expect_file_name = f'{self.PREDICT_LOC[0]}/{self.FILENAME_PREDICT}.mp4'
         self.assertTrue(path.exists(expect_file_name))
 
     def test_train_saves_in_correct_location_train(self, mock_video_file_clip):
-        expect_file_name = f'dataset/{self.FOUNDWORD}/train/{self.FILENAME_TRAIN}.mp4'
+        expect_file_name = f'{self.TRAIN_LOC[0]}/{self.FOUNDWORD}/{self.TRAIN_LOC[1]}/{self.FILENAME_TRAIN}.mp4'
         self.assertTrue(path.exists(expect_file_name))
 
     def test_val_saves_in_correct_location_train(self, mock_video_file_clip):
-        expect_file_name = f'dataset/{self.FOUNDWORD}/val/{self.FILENAME_VAL}.mp4'
+        expect_file_name = f'{self.VAL_LOC[0]}/{self.FOUNDWORD}/{self.VAL_LOC[1]}/{self.FILENAME_VAL}.mp4'
         self.assertTrue(path.exists(expect_file_name))
 
 
@@ -227,7 +232,7 @@ class CropWordTest(TestCase):
                 self.START,
                 self.END,
                 self.VIDEOID,
-                False,
+                None,
             )
         self.assertTrue('No faces' in mock_stdout.getvalue())
 
@@ -242,7 +247,7 @@ class CropWordTest(TestCase):
                 self.START,
                 self.END,
                 self.VIDEOID,
-                False,
+                None,
             )
         self.assertTrue('No faces' in mock_stdout.getvalue())
 
@@ -258,9 +263,10 @@ class CropWordTest(TestCase):
                 self.START,
                 self.END,
                 self.VIDEOID,
-                False,
+                None,
             )
         self.assertTrue('Multiple' in mock_stdout.getvalue())
+
     @patch('sys.stdout', new_callable=StringIO)
     def test_no_crop_on_multiple_end_faces(self, mock_stdout, mock_get_faces, mock_apply_padding):
         mock_get_faces.side_effect = [
@@ -273,7 +279,7 @@ class CropWordTest(TestCase):
                 self.START,
                 self.END,
                 self.VIDEOID,
-                False,
+                None,
             )
         self.assertTrue('Multiple' in mock_stdout.getvalue())
 
@@ -298,6 +304,6 @@ class CropWordTest(TestCase):
                 self.START,
                 self.END,
                 self.VIDEOID,
-                False,
+                None,
             )
         self.assertEqual(mock_crop.call_count, 1)
