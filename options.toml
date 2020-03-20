@@ -1,12 +1,12 @@
 [general]
 usecudnn = false
 usecudnnbenchmark = false
-gpuid = 1
+gpuid = 0
 pretrainedmodelpath = "trainedmodel.pt"
 padding = 11
 
 [input]
-numworkers = 0
+numworkers = 18
 batchsize = 5
 shuffle = false
 
@@ -25,8 +25,8 @@ momentum = 0.9
 weightdecay = 0.0001
 
 [validation]
-folder = "val"
+folder = "train"
 accuracyfilelocation = "accuracy.txt"
 
 [prediction]
-dataset = "./dataset-val"
+dataset = "./predict"

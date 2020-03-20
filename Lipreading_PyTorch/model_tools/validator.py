@@ -38,8 +38,11 @@ class Validator():
 
             outputs = model(input_var)
             count += validator_function(outputs, labels)
-
-        accuracy = count / len(self.validation_dataset)
+        if len(self.validation_dataset) == 0:
+            accuracy = 'No validation files found'
+            print(accuracy)
+        else:
+            accuracy = count / len(self.validation_dataset)
 
         with open(self.accuracy_file_location, 'a') as accuracyfile:
             accuracyfile.write(

@@ -6,8 +6,10 @@ MAXCOUNT = 0
 
 
 class NLLSequenceLoss(Module):
-    '''Custom loss function.
-    Returns a loss that is the sum of all losses at each time step.'''
+    '''
+    Custom loss function.
+    Returns a loss that is the sum of all losses at each time step.
+    '''
 
     def __init__(self):
         super(NLLSequenceLoss, self).__init__()

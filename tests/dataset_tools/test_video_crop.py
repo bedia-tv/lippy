@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 from os import path, remove
-from src.build_dataset.video_crop import (
+from src.dataset_tools.video_crop import (
     load_align,
     crop_words,
     crop_word,
@@ -15,10 +15,9 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 
 from shutil import rmtree
 from io import StringIO
-import sys
 
 
-@patch('src.build_dataset.video_crop.crop_word')
+@patch('src.dataset_tools.video_crop.crop_word')
 class CropWordsTest(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -196,8 +195,8 @@ class GetFaceBoundsTest(TestCase):
         )
 
 
-@patch('src.build_dataset.video_crop.apply_padding')
-@patch('src.build_dataset.video_crop.get_faces')
+@patch('src.dataset_tools.video_crop.apply_padding')
+@patch('src.dataset_tools.video_crop.get_faces')
 class CropWordTest(TestCase):
     class MockVideoFileClip(object):
         def __init__(self):
@@ -217,12 +216,11 @@ class CropWordTest(TestCase):
         cls.FACE_ONE = {'left': 10, 'right': 20, 'top': 10, 'bottom': 20}
         cls.FACE_TWO = {'left': 0, 'right': 10, 'top': 0, 'bottom': 10}
 
-    def test_no_crop_on_missing_start_face(self, mock_get_faces, mock_apply_padding):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_no_crop_on_missing_start_face(self, mock_stdout, mock_get_faces, mock_apply_padding):
         mock_get_faces.side_effect = [[], [self.FACE_ONE]]
         mock_apply_padding.return_value = (self.START, self.END)
-        capturedOutput = StringIO()
-        sys.stdout = capturedOutput
-        with patch('src.build_dataset.video_crop.VideoFileClip') as mock_video_file_clip:
+        with patch('src.dataset_tools.video_crop.VideoFileClip') as mock_video_file_clip:
             mock_video_file_clip = CropWordTest.MockVideoFileClip()
             crop_word(
                 self.TEST_WORD,
@@ -231,15 +229,13 @@ class CropWordTest(TestCase):
                 self.VIDEOID,
                 False,
             )
-        sys.stdout = sys.__stdout__
-        self.assertTrue('No faces' in capturedOutput.getvalue())
+        self.assertTrue('No faces' in mock_stdout.getvalue())
 
-    def test_no_crop_on_missing_end_face(self, mock_get_faces, mock_apply_padding):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_no_crop_on_missing_end_face(self, mock_stdout, mock_get_faces, mock_apply_padding):
         mock_get_faces.side_effect = [[self.FACE_ONE], []]
         mock_apply_padding.return_value = (self.START, self.END)
-        capturedOutput = StringIO()
-        sys.stdout = capturedOutput
-        with patch('src.build_dataset.video_crop.VideoFileClip') as mock_video_file_clip:
+        with patch('src.dataset_tools.video_crop.VideoFileClip') as mock_video_file_clip:
             mock_video_file_clip = CropWordTest.MockVideoFileClip()
             crop_word(
                 self.TEST_WORD,
@@ -248,16 +244,14 @@ class CropWordTest(TestCase):
                 self.VIDEOID,
                 False,
             )
-        sys.stdout = sys.__stdout__
-        self.assertTrue('No faces' in capturedOutput.getvalue())
+        self.assertTrue('No faces' in mock_stdout.getvalue())
 
-    def test_no_crop_on_multiple_start_faces(self, mock_get_faces, mock_apply_padding):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_no_crop_on_multiple_start_faces(self, mock_stdout, mock_get_faces, mock_apply_padding):
         mock_get_faces.side_effect = [
             [self.FACE_ONE, self.FACE_TWO], [self.FACE_ONE]]
         mock_apply_padding.return_value = (self.START, self.END)
-        capturedOutput = StringIO()
-        sys.stdout = capturedOutput
-        with patch('src.build_dataset.video_crop.VideoFileClip') as mock_video_file_clip:
+        with patch('src.dataset_tools.video_crop.VideoFileClip') as mock_video_file_clip:
             mock_video_file_clip = CropWordTest.MockVideoFileClip()
             crop_word(
                 self.TEST_WORD,
@@ -266,16 +260,13 @@ class CropWordTest(TestCase):
                 self.VIDEOID,
                 False,
             )
-        sys.stdout = sys.__stdout__
-        self.assertTrue('Multiple' in capturedOutput.getvalue())
-
-    def test_no_crop_on_multiple_end_faces(self, mock_get_faces, mock_apply_padding):
+        self.assertTrue('Multiple' in mock_stdout.getvalue())
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_no_crop_on_multiple_end_faces(self, mock_stdout, mock_get_faces, mock_apply_padding):
         mock_get_faces.side_effect = [
             [self.FACE_ONE], [self.FACE_ONE, self.FACE_TWO]]
         mock_apply_padding.return_value = (self.START, self.END)
-        capturedOutput = StringIO()
-        sys.stdout = capturedOutput
-        with patch('src.build_dataset.video_crop.VideoFileClip') as mock_video_file_clip:
+        with patch('src.dataset_tools.video_crop.VideoFileClip') as mock_video_file_clip:
             mock_video_file_clip = CropWordTest.MockVideoFileClip()
             crop_word(
                 self.TEST_WORD,
@@ -284,12 +275,11 @@ class CropWordTest(TestCase):
                 self.VIDEOID,
                 False,
             )
-        sys.stdout = sys.__stdout__
-        self.assertTrue('Multiple' in capturedOutput.getvalue())
+        self.assertTrue('Multiple' in mock_stdout.getvalue())
 
-    @patch('src.build_dataset.video_crop.save_to_file')
-    @patch('src.build_dataset.video_crop.get_face_bounds')
-    @patch('src.build_dataset.video_crop.crop')
+    @patch('src.dataset_tools.video_crop.save_to_file')
+    @patch('src.dataset_tools.video_crop.get_face_bounds')
+    @patch('src.dataset_tools.video_crop.crop')
     def test_crop_with_one_start_end_face(
         self,
         mock_save_to_file,
@@ -301,7 +291,7 @@ class CropWordTest(TestCase):
         mock_get_faces.side_effect = [[self.FACE_ONE], [self.FACE_TWO]]
         mock_get_face_bounds.return_value = self.FACE_ONE
         mock_apply_padding.return_value = [self.START, self.END]
-        with patch('src.build_dataset.video_crop.VideoFileClip') as mock_video_file_clip:
+        with patch('src.dataset_tools.video_crop.VideoFileClip') as mock_video_file_clip:
             mock_video_file_clip = CropWordTest.MockVideoFileClip()
             crop_word(
                 self.TEST_WORD,
