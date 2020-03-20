@@ -64,22 +64,25 @@ class RunModelTest(TestCase):
         predictor_output = run_model(False, False, True, True, False, 1)
         self.assertEqual(predictor_output, 'Predictor output')
 
+    @mock.patch('Lipreading_PyTorch.model_tools.trainer.Trainer.__init__', return_value=None)
     @mock.patch('src.model.run_model.exists', return_value=True)
     @mock.patch('sys.stdout')
     @mock.patch('src.model.run_model.load')
     @mock.patch('src.model.run_model.LipRead.load_state_dict')
     @mock.patch('src.model.run_model.Trainer.epoch')
     def test_train_runs_for_every_epoch(self, mock_train, mock_load_model,
-                                        mock_load, mock_stdout, mock_exists):
+                                        mock_load, mock_stdout, mock_exists,
+                                        mock_init):
         run_model(True, False, False, True, False, 5)
         self.assertEqual(mock_train.call_count, 5)
 
+    @mock.patch('Lipreading_PyTorch.model_tools.validator.Validator.__init__', return_value=None)
     @mock.patch('src.model.run_model.exists', return_value=True)
     @mock.patch('src.model.run_model.load')
     @mock.patch('src.model.run_model.LipRead.load_state_dict')
     @mock.patch('src.model.run_model.Validator.epoch')
     def test_validate_runs_for_every_epoch(self, mock_validate, mock_load_model,
-                                           mock_load, mock_exists):
+                                           mock_load, mock_exists, mock_init):
         run_model(False, True, False, True, False, 6)
         self.assertEqual(mock_validate.call_count, 6)
 
@@ -89,6 +92,8 @@ class RunModelTest(TestCase):
         load_options(True, False, False, False, False)
         self.assertTrue(mock_remove.called)
 
+    @mock.patch('Lipreading_PyTorch.model_tools.trainer.Trainer.__init__', return_value=None)
+    @mock.patch('Lipreading_PyTorch.model_tools.validator.Validator.__init__', return_value=None)
     @mock.patch('src.model.run_model.exists', return_value=True)
     @mock.patch('sys.stdout')
     @mock.patch('src.model.run_model.load')
@@ -97,10 +102,13 @@ class RunModelTest(TestCase):
     @mock.patch('src.model.run_model.Validator.epoch')
     def test_validate_run_whith_train_and_validate(self, mock_validate, mock_train,
                                                    mock_load_model, mock_load,
-                                                   mock_stdout, mock_exists):
+                                                   mock_stdout, mock_exists,
+                                                   mock_init_v, mock_init_t):
         run_model(True, True, False, True, False, 6)
         self.assertEqual(mock_validate.call_count, 6)
 
+    @mock.patch('Lipreading_PyTorch.model_tools.trainer.Trainer.__init__', return_value=None)
+    @mock.patch('Lipreading_PyTorch.model_tools.validator.Validator.__init__', return_value=None)
     @mock.patch('src.model.run_model.exists', return_value=True)
     @mock.patch('sys.stdout')
     @mock.patch('src.model.run_model.load')
@@ -109,10 +117,12 @@ class RunModelTest(TestCase):
     @mock.patch('src.model.run_model.Trainer.epoch')
     def test_train_run_whith_train_and_validate(self, mock_train, mock_validate,
                                                 mock_load_model, mock_load,
-                                                mock_stdout, mock_exists):
+                                                mock_stdout, mock_exists,
+                                                mock_init, mock_init_t):
         run_model(True, True, False, True, False, 6)
         self.assertEqual(mock_train.call_count, 6)
 
+    @mock.patch('Lipreading_PyTorch.model_tools.trainer.Trainer.__init__', return_value=None)
     @mock.patch('src.model.run_model.exists', return_value=True)
     @mock.patch('sys.stdout')
     @mock.patch('src.model.run_model.load')
@@ -121,10 +131,12 @@ class RunModelTest(TestCase):
     @mock.patch('src.model.run_model.Validator.epoch')
     def test_validate_not_run_whith_train(self, mock_validate, mock_train,
                                           mock_load_model, mock_load,
-                                          mock_stdout, mock_exists):
+                                          mock_stdout, mock_exists,
+                                          mock_init):
         run_model(True, False, False, True, False, 1)
         self.assertEqual(mock_validate.call_count, 0)
 
+    @mock.patch('Lipreading_PyTorch.model_tools.validator.Validator.__init__', return_value=None)
     @mock.patch('src.model.run_model.exists', return_value=True)
     @mock.patch('sys.stdout')
     @mock.patch('src.model.run_model.load')
@@ -133,7 +145,8 @@ class RunModelTest(TestCase):
     @mock.patch('src.model.run_model.Trainer.epoch')
     def test_train_not_run_whith_validate(self, mock_train, mock_validate,
                                           mock_load_model, mock_load,
-                                          mock_stdout, mock_exists):
+                                          mock_stdout, mock_exists,
+                                          mock_init):
         run_model(False, True, False, True, False, 1)
         self.assertEqual(mock_train.call_count, 0)
 
