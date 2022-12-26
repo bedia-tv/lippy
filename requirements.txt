@@ -1,4 +1,4 @@
-wheel==0.34.2
+wheel==0.38.1
 coverage==4.5.4
 dlib==19.19.0
 imageio==2.6.1
